@@ -12,7 +12,7 @@ export default class PageManager {
 
     static load(context) {
         const page = new this(context);
-
+        console.log(context)
         $(document).ready(() => {
             page.onReady.bind(page)();
         });
