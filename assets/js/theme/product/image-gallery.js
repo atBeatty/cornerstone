@@ -7,8 +7,8 @@ export default class ImageGallery {
         this.$selectableImages = $gallery.find('[data-image-gallery-item]');
         this.currentImage = {};
     }
-
     init() {
+        console.log(this.$mainImage)
         this.bindEvents();
         this.setImageZoom();
     }

@@ -63,7 +63,7 @@ const customClasses = {};
  */
 window.stencilBootstrap = function stencilBootstrap(pageType, contextJSON = null, loadGlobal = true) {
     const context = JSON.parse(contextJSON || '{}');
-
+    console.log(context)
     return {
         load() {
             $(() => {

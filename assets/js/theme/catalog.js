@@ -13,6 +13,9 @@ export default class CatalogPage extends PageManager {
         });
     }
 
+    onProductListingHover(event) {
+        console.log(event)
+    }
     arrangeFocusOnSortBy() {
         const $sortBySelector = $('[data-sort-by="product"] #sort');
 

@@ -28,6 +28,9 @@ export default class Category extends CatalogPage {
     }
 
     onReady() {
+        const imageHover = $('div.image-hover')[0]
+        imageHover.addEventListener('mouseover', this.onProductListingHover)
+        console.log(imageHover)
         this.arrangeFocusOnSortBy();
 
         $('[data-button-type="add-cart"]').on('click', (e) => this.setLiveRegionAttributes($(e.currentTarget).next(), 'status', 'polite'));
