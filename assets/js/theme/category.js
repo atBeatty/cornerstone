@@ -1,4 +1,4 @@
-import { hooks } from '@bigcommerce/stencil-utils';
+import { hooks, api } from '@bigcommerce/stencil-utils';
 import CatalogPage from './catalog';
 import compareProducts from './global/compare-products';
 import FacetedSearch from './common/faceted-search';
@@ -28,6 +28,8 @@ export default class Category extends CatalogPage {
     }
 
     onReady() {
+
+        this.addAlternateImage()
         const imageHover = $('div.image-hover')[0]
         imageHover.addEventListener('mouseover', this.onProductListingHover)
         console.log(imageHover)
@@ -103,5 +105,22 @@ export default class Category extends CatalogPage {
                 onInvalidPrice,
             },
         });
+    }
+
+    addAlternateImage() {
+        const buttons = $('button')
+        buttons.each((_index, btn) => {
+            if (btn.dataset.productId) {
+
+                const productId = btn.dataset.productId && btn.dataset.productId
+                const product = api.product.getById(productId, (err, res) => {
+                    const body = JSON.stringify(res)
+                })
+
+            }
+
+        });
+
+
     }
 }

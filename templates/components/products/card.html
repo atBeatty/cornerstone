@@ -54,23 +54,16 @@
         <a href="{{url}}" class="card-figure__link" aria-label="{{> components/products/product-info}}" {{#if
             settings.data_tag_enabled}} data-event-type="product-click" {{/if}}>
             <div class="card-img-container">
-                {{log image}}
-                {{log images.1.data}}
-
+                {{log this.images.0.data}}
+                {{#each images}}
                 {{> components/common/responsive-img
-                image=image
+                image=this
                 class="card-image"
                 fallback_size=theme_settings.productgallery_size
                 lazyload=theme_settings.lazyload_mode
                 default_image=theme_settings.default_image_product
                 }}
-                {{> components/common/responsive-img
-                image=image
-                class="card-image"
-                fallback_size=theme_settings.productgallery_size
-                lazyload=theme_settings.lazyload_mode
-                default_image=theme_settings.default_image_product
-                }}
+                {{/each}}
             </div>
         </a>
 

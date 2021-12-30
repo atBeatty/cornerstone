@@ -8,7 +8,6 @@ export default class ImageGallery {
         this.currentImage = {};
     }
     init() {
-        console.log(this.$mainImage)
         this.bindEvents();
         this.setImageZoom();
     }
