@@ -108,19 +108,18 @@ export default class Category extends CatalogPage {
     }
 
     addAlternateImage() {
-        const buttons = $('button')
-        buttons.each((_index, btn) => {
-            if (btn.dataset.productId) {
-
-                const productId = btn.dataset.productId && btn.dataset.productId
-                const product = api.product.getById(productId, (err, res) => {
-                    const body = JSON.stringify(res)
-                })
-
-            }
-
-        });
-
+        const cardImages = $('.card-image')
+        cardImages.each((_index, img) => {
+            img.addEventListener('mouseenter', (e) => {
+                e.target.style.zIndex = 1
+                console.dir(e.target.parentElement)
+                Array.from(e.target.parentElement.children).forEach((sib) => sib.style.zIndex = -1)
+            })
+            img.addEventListener('mouseout', (e) => {
+                e.target.style.zIndex = ''
+            })
+        })
+        console.log(cardImages)
 
     }
 }
