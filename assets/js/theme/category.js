@@ -108,18 +108,20 @@ export default class Category extends CatalogPage {
     }
 
     addAlternateImage() {
-        const cardImages = $('.card-image')
-        cardImages.each((_index, img) => {
-            img.addEventListener('mouseenter', (e) => {
-                e.target.style.zIndex = 1
-                console.dir(e.target.parentElement)
-                Array.from(e.target.parentElement.children).forEach((sib) => sib.style.zIndex = -1)
+        const cards = $('.card')
+        cards.each((_index, card) => {
+            console.log(card)
+            card.addEventListener('mouseenter', (e) => {
+
+                console.dir($('.card-img-container')[0].firstElementChild.style.zIndex)
+                $('.card-img-container')[0].lastElementChild.style.zIndex = -2
+                //     Array.from(e.target.parentElement.children).forEach((sib) => sib.style.zIndex = -1)
             })
-            img.addEventListener('mouseout', (e) => {
-                e.target.style.zIndex = ''
+            // e.target.style.zIndex = 1
+            card.addEventListener('mouseleave', (e) => {
+                $('.card-img-container')[0].lastElementChild.style.zIndex = ""
             })
         })
-        console.log(cardImages)
 
     }
 }
