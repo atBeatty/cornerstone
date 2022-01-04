@@ -117,21 +117,13 @@ export default class Category extends CatalogPage {
                         console.log(images[1].style)
                         images[1].style.zIndex = 10
                     })
+            card.addEventListener('mouseleave', (e) => {
+                        console.log(images[1].style)
+                        images[1].style.zIndex = ""
+                    })
         })
        
-        //     const images = $('.card-img-container img')
-        //     card.on('mouseenter', (e) => {
-        //         console.dir(images.first())
-        //         images.second().css('z-index', 2001);
-        //         // console.dir($('.card-img-container')[0].firstElementChild.style.zIndex)
-                
-        //         //     Array.from(e.target.parentElement.children).forEach((sib) => sib.style.zIndex = -1)
-        //     })
-        //     // e.target.style.zIndex = 1
-        //     card.addEventListener('mouseleave', (e) => {
-        //         $('.card-img-container img')[0].style.zIndex = ""
-        //     })
+        
 
-        console.log(cards)
     }
 }
