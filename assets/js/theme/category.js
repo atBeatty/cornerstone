@@ -135,7 +135,7 @@ export default class Category extends CatalogPage {
     cardArray.forEach((card) => {
       const figCaption = card.querySelector("figcaption");
       const firstImg = card.querySelector(".card-img-container img");
-      const secondImg = firstImg.nextElementSibling;
+      //   const secondImg = firstImg.nextElementSibling;
       card.addEventListener("mouseenter", (e) => {
         // secondImg.style.opacity = 0;
         firstImg.style.zIndex = 10;
