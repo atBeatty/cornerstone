@@ -1,38 +1,41 @@
-import PageManager from './page-manager';
-import urlUtils from './common/utils/url-utils';
-import Url from 'url';
+import PageManager from "./page-manager";
+import urlUtils from "./common/utils/url-utils";
+import Url from "url";
 
 export default class CatalogPage extends PageManager {
-    constructor(context) {
-        super(context);
+  constructor(context) {
+    super(context);
 
-        window.addEventListener('beforeunload', () => {
-            if (document.activeElement.id === 'sort') {
-                window.localStorage.setItem('sortByStatus', 'selected');
-            }
-        });
+    window.addEventListener("beforeunload", () => {
+      if (document.activeElement.id === "sort") {
+        window.localStorage.setItem("sortByStatus", "selected");
+      }
+    });
+  }
+
+  //   onProductListingHover(event) {
+  //     console.log(event);
+  //   }
+  arrangeFocusOnSortBy() {
+    const $sortBySelector = $('[data-sort-by="product"] #sort');
+
+    if (window.localStorage.getItem("sortByStatus")) {
+      $sortBySelector.focus();
+      window.localStorage.removeItem("sortByStatus");
     }
+  }
 
-    onProductListingHover(event) {
-        console.log(event)
-    }
-    arrangeFocusOnSortBy() {
-        const $sortBySelector = $('[data-sort-by="product"] #sort');
+  onSortBySubmit(event, currentTarget) {
+    const url = Url.parse(window.location.href, true);
+    const queryParams = $(currentTarget).serialize().split("=");
 
-        if (window.localStorage.getItem('sortByStatus')) {
-            $sortBySelector.focus();
-            window.localStorage.removeItem('sortByStatus');
-        }
-    }
+    url.query[queryParams[0]] = queryParams[1];
+    delete url.query.page;
 
-    onSortBySubmit(event, currentTarget) {
-        const url = Url.parse(window.location.href, true);
-        const queryParams = $(currentTarget).serialize().split('=');
-
-        url.query[queryParams[0]] = queryParams[1];
-        delete url.query.page;
-
-        event.preventDefault();
-        window.location = Url.format({ pathname: url.pathname, search: urlUtils.buildQueryString(url.query) });
-    }
+    event.preventDefault();
+    window.location = Url.format({
+      pathname: url.pathname,
+      search: urlUtils.buildQueryString(url.query),
+    });
+  }
 }
