@@ -32,7 +32,7 @@ export default class Category extends CatalogPage {
         this.addAlternateImage()
         const imageHover = $('div.image-hover')[0]
         imageHover.addEventListener('mouseover', this.onProductListingHover)
-        console.log(imageHover)
+        // console.log(imageHover)
         this.arrangeFocusOnSortBy();
 
         $('[data-button-type="add-cart"]').on('click', (e) => this.setLiveRegionAttributes($(e.currentTarget).next(), 'status', 'polite'));
@@ -108,20 +108,30 @@ export default class Category extends CatalogPage {
     }
 
     addAlternateImage() {
-        const cards = $('.card')
-        cards.each((_index, card) => {
-            console.log(card)
+        // const cards = $('.card')
+        const cards = document.querySelectorAll(".card")
+
+        cards.forEach(card => {
+            const images = card.querySelectorAll('.card-image')
             card.addEventListener('mouseenter', (e) => {
-
-                console.dir($('.card-img-container')[0].firstElementChild.style.zIndex)
-                $('.card-img-container')[0].lastElementChild.style.zIndex = -2
-                //     Array.from(e.target.parentElement.children).forEach((sib) => sib.style.zIndex = -1)
-            })
-            // e.target.style.zIndex = 1
-            card.addEventListener('mouseleave', (e) => {
-                $('.card-img-container')[0].lastElementChild.style.zIndex = ""
-            })
+                        console.log(images[1].style)
+                        images[1].style.zIndex = 10
+                    })
         })
+       
+        //     const images = $('.card-img-container img')
+        //     card.on('mouseenter', (e) => {
+        //         console.dir(images.first())
+        //         images.second().css('z-index', 2001);
+        //         // console.dir($('.card-img-container')[0].firstElementChild.style.zIndex)
+                
+        //         //     Array.from(e.target.parentElement.children).forEach((sib) => sib.style.zIndex = -1)
+        //     })
+        //     // e.target.style.zIndex = 1
+        //     card.addEventListener('mouseleave', (e) => {
+        //         $('.card-img-container img')[0].style.zIndex = ""
+        //     })
 
+        console.log(cards)
     }
 }
