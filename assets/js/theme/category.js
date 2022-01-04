@@ -132,16 +132,19 @@ export default class Category extends CatalogPage {
     const cards = document.querySelectorAll(".card");
     const cardArray = Array.from(cards);
 
-    cardArray.reverse().forEach((card) => {
+    cardArray.forEach((card) => {
+      const figCaption = card.querySelector("figcaption");
       const firstImg = card.querySelector(".card-img-container img");
       const secondImg = firstImg.nextElementSibling;
       card.addEventListener("mouseenter", (e) => {
-        secondImg.style.opacity = 0;
-        // secondImg.style.zIndex = 10;
+        // secondImg.style.opacity = 0;
+        firstImg.style.zIndex = 10;
+        figCaption.style.zIndex = 20;
       });
       card.addEventListener("mouseleave", (e) => {
-        secondImg.style.opacity = 1;
-        // images[1].style.zIndex = "";
+        // secondImg.style.opacity = 1;
+        firstImg.style.zIndex = "";
+        figCaption.style.zIndex = "";
       });
     });
   }

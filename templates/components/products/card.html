@@ -56,7 +56,6 @@
             <div class="card-img-container">
                 {{#each images}}
                 {{log @index}}
-                {{#if @index '<' 2}}
                 {{> components/common/responsive-img
                 image=this
                 class="card-image"
@@ -64,7 +63,6 @@
                 lazyload=theme_settings.lazyload_mode
                 default_image=theme_settings.default_image_product
                 }}
-                {{/if}}
                 {{/each}}
             </div>
         </a>
