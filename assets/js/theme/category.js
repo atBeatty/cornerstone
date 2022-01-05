@@ -165,12 +165,28 @@ export default class Category extends CatalogPage {
         .then((data) => console.log(JSON.stringify(data)))
         .catch((error) => console.error(error))
     }
+    cart()
     $button.on("click", (e) => {
-      cart()
+      //   cart()
 
-      $(".card-figcaption-body button").each((_index, el) =>
-        console.log($(el).data())
-      )
+      $(".card-figcaption-body button").each((_index, el) => {
+        const prodId = $(el).data("productId")
+        console.log(prodId)
+        this.addCartItem(
+          `/api/storefront/carts/`,
+          `d4e978c2-bdcf-41b0-a49b-fecf4f5223c1`,
+          {
+            lineItems: [
+              {
+                quantity: 1,
+                productId: prodId,
+              },
+            ],
+          }
+        )
+          .then((data) => console.log(JSON.stringify(data)))
+          .catch((error) => console.error(error))
+      })
     })
   }
 
