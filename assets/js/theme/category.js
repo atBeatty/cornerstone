@@ -167,6 +167,10 @@ export default class Category extends CatalogPage {
     }
     $button.on("click", (e) => {
       cart()
+
+      $(".card-figcaption-body button").each((_index, el) =>
+        console.log($(el).data())
+      )
     })
   }
 
