@@ -136,34 +136,24 @@ export default class Category extends CatalogPage {
         credentials: "same-origin",
       }).then((response) => response.json())
     }
-
     getCart(
       "/api/storefront/carts?include=lineItems.digitalItems.options,lineItems.physicalItems.options"
     )
       .then((data) => {
         currentCart["data"] = data[0]
-        console.log(currentCart, data[0])
       })
       .catch((error) => console.error(error))
     const $button = $("#add-category-products")
     $button.on("click", (e) => {
       console.log(currentCart.data)
-      // console.log(currentCart)
-      // $(".card-figcaption-body button").each((_index, el) => {
-      //   const prodId = $(el).data("productId")
-      //   console.log(prodId, cart())
-      //   this.addCartItem(`/api/storefront/carts/`, "", {
-      //     lineItems: [
-      //       {
-      //         quantity: 1,
-      //         productId: prodId,
-      //       },
-      //     ],
-      //   })
-      //     .then((data) => console.log(JSON.stringify(data)))
-      //     .catch((error) => console.error(error))
-      // })
     })
+
+    // All products from category
+    const productIds = $('button[data-product-id!=""]')
+    console.log(
+      productIds.map((_, element) => $(element).data("product-id")),
+      typeof productIds
+    )
   }
 
   addAlternateImage() {
