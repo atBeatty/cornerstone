@@ -128,65 +128,41 @@ export default class Category extends CatalogPage {
     )
   }
 
-  addCartItem(url, cartId, cartItems) {
-    return fetch(url + cartId + "/items", {
-      method: "POST",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(cartItems),
-    }).then((response) => response.json())
-  }
-
-  createCart(url, cartItems) {
-    return fetch(url, {
-      method: "POST",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(cartItems),
-    }).then((response) => response.json())
-  }
-
-  getCart(url) {
-    return fetch(url, {
-      method: "GET",
-      credentials: "same-origin",
-    }).then((response) => response.json())
-  }
   addAllToCart() {
-    const $button = $("#add-category-products")
-    const cart = () => {
-      this.getCart(
-        "/api/storefront/carts?include=lineItems.digitalItems.options,lineItems.physicalItems.options"
-      )
-        .then((data) => console.log(JSON.stringify(data)))
-        .catch((error) => console.error(error))
+    let currentCart = {}
+    function getCart(url) {
+      return fetch(url, {
+        method: "GET",
+        credentials: "same-origin",
+      }).then((response) => response.json())
     }
-    cart()
-    $button.on("click", (e) => {
-      //   cart()
 
-      $(".card-figcaption-body button").each((_index, el) => {
-        const prodId = $(el).data("productId")
-        console.log(prodId)
-        this.addCartItem(
-          `/api/storefront/carts/`,
-          `d4e978c2-bdcf-41b0-a49b-fecf4f5223c1`,
-          {
-            lineItems: [
-              {
-                quantity: 1,
-                productId: prodId,
-              },
-            ],
-          }
-        )
-          .then((data) => console.log(JSON.stringify(data)))
-          .catch((error) => console.error(error))
+    getCart(
+      "/api/storefront/carts?include=lineItems.digitalItems.options,lineItems.physicalItems.options"
+    )
+      .then((data) => {
+        currentCart["data"] = data[0]
+        console.log(currentCart, data[0])
       })
+      .catch((error) => console.error(error))
+    const $button = $("#add-category-products")
+    $button.on("click", (e) => {
+      console.log(currentCart.data)
+      // console.log(currentCart)
+      // $(".card-figcaption-body button").each((_index, el) => {
+      //   const prodId = $(el).data("productId")
+      //   console.log(prodId, cart())
+      //   this.addCartItem(`/api/storefront/carts/`, "", {
+      //     lineItems: [
+      //       {
+      //         quantity: 1,
+      //         productId: prodId,
+      //       },
+      //     ],
+      //   })
+      //     .then((data) => console.log(JSON.stringify(data)))
+      //     .catch((error) => console.error(error))
+      // })
     })
   }
 
