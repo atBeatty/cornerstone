@@ -1,6 +1,7 @@
 {{inject 'noCompareMessage' (lang 'compare.no_compare')}}
 
 {{#if category.products}}
+{{log category.products}}
 {{> components/products/filter sort=pagination.category.sort}}
 <div class="image-hover">HELLO</div>
 <form action="{{urls.compare}}" method='POST' {{#if settings.data_tag_enabled}}

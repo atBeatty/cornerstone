@@ -1,5 +1,5 @@
 <ul class="productGrid">
-  {{#each products}}
+  {{#each products}} {{log products}} {{log "hi"}}
   <li class="product">
     {{>components/products/card settings=../settings
     show_compare=../show_compare show_rating=../settings.show_product_rating

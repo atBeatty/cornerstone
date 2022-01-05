@@ -35,6 +35,7 @@ export default class Category extends CatalogPage {
 
   onReady() {
     this.addAlternateImage();
+    this.addAllToCart();
     // const imageHover = $("div.image-hover")[0];
     // imageHover.addEventListener("mouseover", this.onProductListingHover);
     // console.log(imageHover)
@@ -125,6 +126,52 @@ export default class Category extends CatalogPage {
         },
       }
     );
+  }
+
+  createCart(url, cartItems) {
+    return fetch(url, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(cartItems),
+    }).then((response) => response.json());
+  }
+
+  addAllToCart() {
+    this.createCart(`/api/storefront/carts`, {
+      lineItems: [
+        {
+          quantity: 1,
+          productId: 86,
+        },
+        {
+          quantity: 1,
+          productId: 88,
+        },
+      ],
+    })
+      .then((data) => console.log(JSON.stringify(data)))
+      .catch((error) => console.error(error));
+    const addAllBtn = $("button#add-category-products");
+    addAllBtn.on("click", (e) => {
+      console.log(e);
+      api.cart.itemAdd({ action: "ADD", product_id: 123 }, (err, response) => {
+        console.log(response);
+      });
+    });
+    // api.cart.itemAdd(new FormData(form), (err, response) => {
+    //   const errorMessage = err || response.data.error;
+    //   // Guard statement
+    //   if (errorMessage) {
+    //     // Strip the HTML from the error message
+    //     const tmp = document.createElement("DIV");
+    //     tmp.innerHTML = errorMessage;
+
+    //     return alert(tmp.textContent || tmp.innerText);
+    //   }
+    // });
   }
 
   addAlternateImage() {

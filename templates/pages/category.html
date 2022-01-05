@@ -2,7 +2,7 @@
 category:
   shop_by_price: true
   products:
-    limit: { { theme_settings.categorypage_products_per_page } }
+    limit: 12
 ---
 
 {{inject "categoryProductsPerPage"
@@ -14,7 +14,8 @@ category.id}} {{#partial "head"}} {{#if pagination.category.previous}}
 {{/if}} {{/partial}} {{#partial "page"}}
 <button
   type="button"
-  class="button button--small add-category-products"
+  class="button button--small"
+  id="add-category-products"
   data-event-type="product-click"
   data-product-id="{{id}}"
 >
