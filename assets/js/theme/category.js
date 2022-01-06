@@ -129,31 +129,19 @@ export default class Category extends CatalogPage {
   }
 
   addAllToCart() {
-    let currentCart = {}
-    function getCart(url) {
-      return fetch(url, {
-        method: "GET",
-        credentials: "same-origin",
-      }).then((response) => response.json())
-    }
-    getCart(
-      "/api/storefront/carts?include=lineItems.digitalItems.options,lineItems.physicalItems.options"
-    )
-      .then((data) => {
-        currentCart["data"] = data[0]
-      })
-      .catch((error) => console.error(error))
-    const $button = $("#add-category-products")
-    $button.on("click", (e) => {
-      console.log(currentCart.data)
+    const cartItemsData = $('button[data-product-id!=""]').map((_index, el) => {
+      const productId = $(el).attr("data-product-id")
+      if (productId) {
+        return { quantity: 1, productId: productId }
+      }
     })
-
+    console.log(cartItemsData)
+    this.createCart(`/api/storefront/carts`, {
+      lineItems: Array.from(cartItemsData),
+    })
+      .then((data) => console.log(JSON.stringify(data)))
+      .catch((error) => console.error(error))
     // All products from category
-    const productIds = $('button[data-product-id!=""]')
-    console.log(
-      productIds.map((_, element) => $(element).data("product-id")),
-      typeof productIds
-    )
   }
 
   addAlternateImage() {
@@ -176,5 +164,16 @@ export default class Category extends CatalogPage {
         figCaption.style.zIndex = ""
       })
     })
+  }
+
+  createCart(url, cartItems) {
+    return fetch(url, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(cartItems),
+    }).then((response) => response.json())
   }
 }
