@@ -1,8 +1,11 @@
 # Cornerstone
 
+- _preview_ 89m3eb04j6
+- _url_ https://demo-store212.mybigcommerce.com/
+
 ## Notes from Developer
 
-Most of the JS code used is located in the category.js file under js/theme
+- Most of the JS code used is located in the category.js file under js/theme
 
 ## Tasks
 
