@@ -151,22 +151,30 @@ export default class Category extends CatalogPage {
             lineItems: Array.from(cartItemsData),
           }).then((data) => console.log(JSON.stringify(data)))
         })
+        location.reload()
+        $("#delete-category-products").css("opacity", 1).attr("disabled", false)
       } else {
-        return this.createCart(`/api/storefront/carts`, {
+        this.createCart(`/api/storefront/carts`, {
           lineItems: Array.from(cartItemsData),
         })
-          .then((data) => console.log(JSON.stringify(data)))
+          .then((data) => {
+            console.log(JSON.stringify(data))
+            location.reload()
+            // $("#delete-category-products")
+            //   .css("opacity", 1)
+            //   .attr("disabled", false)
+          })
           .catch((error) => console.error(error))
+        location.reload()
       }
     })
-    // All products from category
+    // // All products from category
   }
 
   deleteAllFromCart() {
     const $deleteAllButton = $("#delete-category-products")
     console.log($deleteAllButton)
     $deleteAllButton.on("click", (e) => {
-      console.log(e)
       const countPill = $(".countPill")[1].innerHTML
       const cartItemsData = $('button[data-product-id!=""]').map(
         (_index, el) => {
@@ -178,6 +186,7 @@ export default class Category extends CatalogPage {
       )
 
       if (countPill > 0) {
+        $deleteAllButton.css("opacity", 0).attr("disabled", true)
         const prodIds = Array.from(cartItemsData).map((el) => el.productId)
         this.getCart("/api/storefront/carts").then((data) => {
           const cartId = data[0]["id"]
@@ -188,6 +197,8 @@ export default class Category extends CatalogPage {
             )
           })
         })
+
+        location.reload()
       }
     })
     // All products from category
