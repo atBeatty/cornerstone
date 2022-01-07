@@ -129,18 +129,29 @@ export default class Category extends CatalogPage {
   }
 
   addAllToCart() {
+    const countPill = $(".countPill")[1].innerHTML
     const cartItemsData = $('button[data-product-id!=""]').map((_index, el) => {
       const productId = $(el).attr("data-product-id")
       if (productId) {
         return { quantity: 1, productId: productId }
       }
     })
-    console.log(cartItemsData)
-    this.createCart(`/api/storefront/carts`, {
-      lineItems: Array.from(cartItemsData),
-    })
-      .then((data) => console.log(JSON.stringify(data)))
-      .catch((error) => console.error(error))
+
+    if (countPill > 0) {
+      this.getCart("/api/storefront/carts").then((data) => {
+        const cartId = data[0]["id"]
+
+        return this.addCartItem(`/api/storefront/carts/`, cartId, {
+          lineItems: Array.from(cartItemsData),
+        }).then((data) => console.log(JSON.stringify(data)))
+      })
+    } else {
+      return this.createCart(`/api/storefront/carts`, {
+        lineItems: Array.from(cartItemsData),
+      })
+        .then((data) => console.log(JSON.stringify(data)))
+        .catch((error) => console.error(error))
+    }
     // All products from category
   }
 
@@ -165,9 +176,25 @@ export default class Category extends CatalogPage {
       })
     })
   }
+  getCart(url) {
+    return fetch(url, {
+      method: "GET",
+      credentials: "same-origin",
+    }).then((response) => response.json())
+  }
 
   createCart(url, cartItems) {
     return fetch(url, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(cartItems),
+    }).then((response) => response.json())
+  }
+  addCartItem(url, cartId, cartItems) {
+    return fetch(url + cartId + "/items", {
       method: "POST",
       credentials: "same-origin",
       headers: {
