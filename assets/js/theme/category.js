@@ -24,16 +24,13 @@ export default class Category extends CatalogPage {
       $("a.navList-action.is-active").focus()
     }
 
-    $("a.navList-action").on("click", () =>
-      this.setLiveRegionAttributes(
-        $("span.price-filter-message"),
-        "status",
-        "assertive"
-      )
-    )
+    $("a.navList-action").on("click", () => this.setLiveRegionAttributes($("span.price-filter-message"), "status", "assertive"))
   }
 
   onReady() {
+    const $deleteAllButton = $("#delete-category-products")
+    const $countPill = $(".countPill")[1].innerHTML
+    // $countPill > 0 ? $deleteAllButton.css("opacity", 1) : $deleteAllButton.css("opacity", 0).attr("disabled", true)
     this.addAlternateImage()
     this.addAllToCart()
     this.deleteAllFromCart()
@@ -42,13 +39,7 @@ export default class Category extends CatalogPage {
     // console.log(imageHover)
     this.arrangeFocusOnSortBy()
 
-    $('[data-button-type="add-cart"]').on("click", (e) =>
-      this.setLiveRegionAttributes(
-        $(e.currentTarget).next(),
-        "status",
-        "polite"
-      )
-    )
+    $('[data-button-type="add-cart"]').on("click", (e) => this.setLiveRegionAttributes($(e.currentTarget).next(), "status", "polite"))
 
     this.makeShopByPriceFilterAccessible()
 
@@ -61,9 +52,7 @@ export default class Category extends CatalogPage {
       hooks.on("sortBy-submitted", this.onSortBySubmit)
     }
 
-    $("a.reset-btn").on("click", () =>
-      this.setLiveRegionsAttributes($("span.reset-message"), "status", "polite")
-    )
+    $("a.reset-btn").on("click", () => this.setLiveRegionsAttributes($("span.reset-message"), "status", "polite"))
 
     this.ariaNotifyNoProducts()
   }
@@ -132,16 +121,13 @@ export default class Category extends CatalogPage {
   addAllToCart() {
     const $addAllButton = $("#add-category-products")
     $addAllButton.on("click", (e) => {
-      console.log(e)
       const countPill = $(".countPill")[1].innerHTML
-      const cartItemsData = $('button[data-product-id!=""]').map(
-        (_index, el) => {
-          const productId = $(el).attr("data-product-id")
-          if (productId) {
-            return { quantity: 1, productId: productId }
-          }
+      const cartItemsData = $('button[data-product-id!=""]').map((_index, el) => {
+        const productId = $(el).attr("data-product-id")
+        if (productId) {
+          return { quantity: 1, productId: productId }
         }
-      )
+      })
 
       if (countPill > 0) {
         this.getCart("/api/storefront/carts").then((data) => {
@@ -149,24 +135,23 @@ export default class Category extends CatalogPage {
 
           return this.addCartItem(`/api/storefront/carts/`, cartId, {
             lineItems: Array.from(cartItemsData),
-          }).then((data) => console.log(JSON.stringify(data)))
+          }).then((data) => {
+            $("#delete-category-products").css("opacity", 1).attr("disabled", false)
+            location.reload()
+            console.log(JSON.stringify(data))
+          })
         })
-        location.reload()
-        $("#delete-category-products").css("opacity", 1).attr("disabled", false)
       } else {
-        this.createCart(`/api/storefront/carts`, {
+        return this.createCart(`/api/storefront/carts`, {
           lineItems: Array.from(cartItemsData),
         })
           .then((data) => {
             console.log(JSON.stringify(data))
-            location.reload()
-            // $("#delete-category-products")
-            //   .css("opacity", 1)
-            //   .attr("disabled", false)
+            $("#delete-category-products").css("opacity", 1).attr("disabled", false)
           })
           .catch((error) => console.error(error))
-        location.reload()
       }
+      location.reload()
     })
     // // All products from category
   }
@@ -176,14 +161,12 @@ export default class Category extends CatalogPage {
     console.log($deleteAllButton)
     $deleteAllButton.on("click", (e) => {
       const countPill = $(".countPill")[1].innerHTML
-      const cartItemsData = $('button[data-product-id!=""]').map(
-        (_index, el) => {
-          const productId = $(el).attr("data-product-id")
-          if (productId) {
-            return { quantity: 1, productId: productId }
-          }
+      const cartItemsData = $('button[data-product-id!=""]').map((_index, el) => {
+        const productId = $(el).attr("data-product-id")
+        if (productId) {
+          return { quantity: 1, productId: productId }
         }
-      )
+      })
 
       if (countPill > 0) {
         $deleteAllButton.css("opacity", 0).attr("disabled", true)
@@ -192,9 +175,7 @@ export default class Category extends CatalogPage {
           const cartId = data[0]["id"]
           prodIds.map((pid) => {
             console.log(cartId, pid)
-            return this.deleteCart(cartId).then((data) =>
-              console.log(JSON.stringify(data))
-            )
+            return this.deleteCart(cartId).then((data) => console.log(JSON.stringify(data)))
           })
         })
 
