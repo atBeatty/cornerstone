@@ -36,6 +36,7 @@ export default class Category extends CatalogPage {
   onReady() {
     this.addAlternateImage()
     this.addAllToCart()
+    this.deleteAllFromCart()
     // const imageHover = $("div.image-hover")[0];
     // imageHover.addEventListener("mouseover", this.onProductListingHover);
     // console.log(imageHover)
@@ -129,32 +130,68 @@ export default class Category extends CatalogPage {
   }
 
   addAllToCart() {
-    const countPill = $(".countPill")[1].innerHTML
-    const cartItemsData = $('button[data-product-id!=""]').map((_index, el) => {
-      const productId = $(el).attr("data-product-id")
-      if (productId) {
-        return { quantity: 1, productId: productId }
+    const $addAllButton = $("#add-category-products")
+    $addAllButton.on("click", (e) => {
+      console.log(e)
+      const countPill = $(".countPill")[1].innerHTML
+      const cartItemsData = $('button[data-product-id!=""]').map(
+        (_index, el) => {
+          const productId = $(el).attr("data-product-id")
+          if (productId) {
+            return { quantity: 1, productId: productId }
+          }
+        }
+      )
+
+      if (countPill > 0) {
+        this.getCart("/api/storefront/carts").then((data) => {
+          const cartId = data[0]["id"]
+
+          return this.addCartItem(`/api/storefront/carts/`, cartId, {
+            lineItems: Array.from(cartItemsData),
+          }).then((data) => console.log(JSON.stringify(data)))
+        })
+      } else {
+        return this.createCart(`/api/storefront/carts`, {
+          lineItems: Array.from(cartItemsData),
+        })
+          .then((data) => console.log(JSON.stringify(data)))
+          .catch((error) => console.error(error))
       }
     })
-
-    if (countPill > 0) {
-      this.getCart("/api/storefront/carts").then((data) => {
-        const cartId = data[0]["id"]
-
-        return this.addCartItem(`/api/storefront/carts/`, cartId, {
-          lineItems: Array.from(cartItemsData),
-        }).then((data) => console.log(JSON.stringify(data)))
-      })
-    } else {
-      return this.createCart(`/api/storefront/carts`, {
-        lineItems: Array.from(cartItemsData),
-      })
-        .then((data) => console.log(JSON.stringify(data)))
-        .catch((error) => console.error(error))
-    }
     // All products from category
   }
 
+  deleteAllFromCart() {
+    const $deleteAllButton = $("#delete-category-products")
+    console.log($deleteAllButton)
+    $deleteAllButton.on("click", (e) => {
+      console.log(e)
+      const countPill = $(".countPill")[1].innerHTML
+      const cartItemsData = $('button[data-product-id!=""]').map(
+        (_index, el) => {
+          const productId = $(el).attr("data-product-id")
+          if (productId) {
+            return { quantity: 1, productId: productId }
+          }
+        }
+      )
+
+      if (countPill > 0) {
+        const prodIds = Array.from(cartItemsData).map((el) => el.productId)
+        this.getCart("/api/storefront/carts").then((data) => {
+          const cartId = data[0]["id"]
+          prodIds.map((pid) => {
+            console.log(cartId, pid)
+            return this.deleteCart(cartId).then((data) =>
+              console.log(JSON.stringify(data))
+            )
+          })
+        })
+      }
+    })
+    // All products from category
+  }
   addAlternateImage() {
     // const cards = $('.card')
     const cards = document.querySelectorAll(".card")
@@ -180,6 +217,15 @@ export default class Category extends CatalogPage {
     return fetch(url, {
       method: "GET",
       credentials: "same-origin",
+    }).then((response) => response.json())
+  }
+  deleteCart(cartId) {
+    return fetch("/api/storefront/carts/" + cartId, {
+      method: "DELETE",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
     }).then((response) => response.json())
   }
 
