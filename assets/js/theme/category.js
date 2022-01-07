@@ -137,8 +137,8 @@ export default class Category extends CatalogPage {
             lineItems: Array.from(cartItemsData),
           }).then((data) => {
             $("#delete-category-products").css("opacity", 1).attr("disabled", false)
-            location.reload()
             console.log(JSON.stringify(data))
+            location.reload()
           })
         })
       } else {
@@ -148,10 +148,10 @@ export default class Category extends CatalogPage {
           .then((data) => {
             console.log(JSON.stringify(data))
             $("#delete-category-products").css("opacity", 1).attr("disabled", false)
+            location.reload()
           })
           .catch((error) => console.error(error))
       }
-      location.reload()
     })
     // // All products from category
   }
