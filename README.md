@@ -6,13 +6,13 @@ Most of the JS code used is located in the category.js file under js/theme
 
 ## Tasks
 
-1. I do not have login task completed
-1. I do not have the alert window notifying user of "Added to Cart" after button press
+- I do not have login task completed
+- I do not have the alert window notifying user of "Added to Cart" after button press
 
 ## Test/Evaluate
 
-1. I interacted mainly with the Special Items page
-1. Currently, the button event does not handle adding product items that require "options" like colors and sizes
+- I interacted mainly with the Special Items page
+- Currently, the button event does not handle adding product items that require "options" like colors and sizes
 
 #### License
 
